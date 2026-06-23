@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aluno em D'IA</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f2f4f7;
+}
+
+/* Cabeçalho */
+header {
+    background: #2563eb;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+/* Título */
+header h1 {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+/* Botão voltar */
+.back {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Conteúdo */
+main {
+    padding: 20px;
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+/* Tela escondida */
+.tela {
+    display: none;
+}
+
+.ativa {
+    display: block;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <button class="back" onclick="voltar()">←</button>
+    <h1 id="titulo">Aluno em D’IA</h1>
+</header>
+
+<!-- CONTEÚDO -->
+<main>
+
+    <!-- MENU -->
+    <div id="menu" class="tela ativa">
+
+        <div class="card" onclick="abrir('aluno')">👤 Gestão do Aluno</div>
+        <div class="card" onclick="abrir('conteudo')">📚 Conteúdo Educacional</div>
+        <div class="card" onclick="abrir('comunicacao')">💬 Comunicação</div>
+        <div class="card" onclick="abrir('usuario')">🔐 Usuário / Acesso</div>
+        <div class="card" onclick="abrir('lgpd')">🔒 LGPD & Concordância</div>
+
+    </div>
+
+    <!-- TELAS -->
+
+    <div id="aluno" class="tela">
+        <div class="card">📌 Cadastro de alunos</div>
+        <div class="card">👤 Perfil do aluno</div>
+        <div class="card">📊 Desempenho</div>
+        <div class="card">📈 Histórico</div>
+    </div>
+
+    <div id="conteudo" class="tela">
+        <div class="card">📖 Trilhas</div>
+        <div class="card">🎥 Videoaulas</div>
+        <div class="card">📝 Exercícios</div>
+    </div>
+
+    <div id="comunicacao" class="tela">
+        <div class="card">💬 Chat aluno-professor</div>
+        <div class="card">🔔 Notificações</div>
+        <div class="card">📢 Avisos</div>
+    </div>
+
+    <div id="usuario" class="tela">
+        <div class="card">🔑 Login</div>
+        <div class="card">👤 Perfil</div>
+        <div class="card">⚙️ Configurações</div>
+    </div>
+
+    <div id="lgpd" class="tela">
+        <div class="card">✅ Consentimento</div>
+        <div class="card">📄 Termos</div>
+        <div class="card">🔐 Privacidade</div>
+        <div class="card">🗑 Exclusão de dados</div>
+    </div>
+
+</main>
+
+<script>
+
+// Abrir telas
+function abrir(tela) {
+
+    // esconde tudo
+    document.querySelectorAll('.tela').forEach(el => {
+        el.classList.remove('ativa');
+    });
+
+    // mostra selecionada
+    document.getElementById(tela).classList.add('ativa');
+
+    // muda título
+    let titulos = {
+        aluno: "Gestão do Aluno",
+        conteudo: "Conteúdo Educacional",
+        comunicacao: "Comunicação",
+        usuario: "Usuário / Acesso",
+        lgpd: "LGPD & Concordância"
+    };
+
+    document.getElementById("titulo").innerText = titulos[tela];
+}
+
+// voltar para menu
+function voltar(){
+
+    document.querySelectorAll('.tela').forEach(el => {
+        el.classList.remove('ativa');
+    });
+
+    document.getElementById("menu").classList.add('ativa');
+    document.getElementById("titulo").innerText = "Aluno em D’IA";
+}
+
+</script>
+
+</body>
+</html>
+``
