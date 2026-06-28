@@ -56,8 +56,8 @@ function login(){
   let s = document.getElementById("senha").value;
 
 if(
-    (u === "admin" && s === "123") ||
-    (u === "ananda" && s === "123") ||
+    (u === "admin" && s === "4661") ||
+    (u === "ananda" && s === "7532") ||
     (u === "pai" && s === "123") ||
     (s === "123456") // ✅ QUALQUER USUÁRIO
 ){
