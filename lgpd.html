@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>LGPD</title>
+
+<style>
+*{box-sizing:border-box}
+
+.modal{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.caixa{
+background:white;
+padding:25px;
+border-radius:10px;
+width:350px;
+position:relative;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body style="margin:0;font-family:Arial;background:#f5f5f5;overflow-x:hidden;">
+
+<!-- HEADER -->
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#3b6edc;color:white;">
+  <div onclick="voltar()" style="cursor:pointer;font-size:20px;">←</div>
+  <div style="font-weight:bold;">LGPD</div>
+  <div onclick="sair()" style="cursor:pointer;">Sair</div>
+</div>
+
+<div id="conteudo" style="padding:20px;"></div>
+
+<script>
+
+// NAV
+function voltar(){ window.location.href="menu.html"; }
+function sair(){ window.location.href="index.html"; }
+
+// VOLTAR INTERNO
+function botaoVoltar(){
+return `<div onclick="inicio()" style="margin-bottom:15px;color:#3b6edc;font-weight:bold;cursor:pointer;">⬅ Voltar</div>`;
+}
+
+// CARD
+function cardLgpd(icon,titulo,desc){
+return `
+<div onclick="detalhe('${titulo}')"
+style="
+width:260px;height:160px;
+flex:0 0 260px;
+background:white;padding:20px;
+border-radius:14px;border:3px solid #ddd;
+cursor:pointer;text-align:center;
+display:flex;flex-direction:column;justify-content:center;
+transition:0.25s;"
+onmouseover="this.style.border='3px solid #3b6edc';this.style.transform='scale(1.02)'"
+onmouseout="this.style.border='3px solid #ddd';this.style.transform='scale(1)'"
+>
+<div style="font-size:40px;">${icon}</div>
+<b>${titulo}</b>
+
+<div style="font-size:14px;overflow:hidden;margin-top:5px;">
+${desc}
+</div>
+
+</div>`;
+}
+
+// INICIO
+function inicio(){
+document.getElementById("conteudo").innerHTML=`
+
+<h2>LGPD</h2>
+
+<!-- TOPO -->
+<div style="display:flex;justify-content:center;margin-bottom:30px;">
+
+<div onclick="detalhe('Dados pessoais')"
+style="width:300px;height:180px;background:white;padding:25px;border-radius:16px;border:3px solid #3b6edc;cursor:pointer;text-align:center;display:flex;flex-direction:column;justify-content:center;"
+>
+
+<div style="font-size:45px;">👤</div>
+<b style="font-size:18px;">Dados pessoais</b>
+
+<div style="margin-top:8px;font-size:14px;">
+Consulta, exclusão e portabilidade de dados
+</div>
+
+</div>
+</div>
+
+<!-- RESTANTE -->
+<div style="display:flex;flex-wrap:wrap;gap:20px;">
+
+${cardLgpd("✅","Consentimento do usuário","Autorização para uso de dados")}
+${cardLgpd("📜","Termos de uso","Regras de utilização")}
+${cardLgpd("🔐","Política de privacidade","Proteção de dados")}
+${cardLgpd("🍪","Aceite de cookies","Controle de cookies")}
+${cardLgpd("📊","Gestão de dados pessoais","Administração dos dados")}
+${cardLgpd("🔗","Controle de compartilhamento","Compartilhamento de dados")}
+${cardLgpd("🧾","Histórico de consentimentos","Registros")}
+${cardLgpd("📦","Portabilidade de dados","Exportação")}
+${cardLgpd("⚙️","Configurações de privacidade","Ajustes")}
+${cardLgpd("🛡️","Segurança da informação","Proteção")}
+
+</div>
+`;
+}
+
+// DETALHE
+function detalhe(titulo){
+
+if(titulo==="Dados pessoais"){
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+<h2>Dados pessoais</h2>
+
+${itemDados("📄","Consulta de dados")}
+${itemDados("❌","Exclusão de dados")}
+${itemDados("📦","Portabilidade de dados")}
+`;
+return;
+}
+
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+<h2>${titulo}</h2>
+<div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;">
+Conteúdo informativo sobre ${titulo}.
+</div>`;
+}
+
+// ITENS
+function itemDados(icon,titulo){
+return `
+<div onclick="acaoDados('${titulo}')"
+style="background:white;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #ddd;cursor:pointer;">
+<b>${icon} ${titulo}</b>
+</div>`;
+}
+
+// AÇÕES
+function acaoDados(tipo){
+if(tipo==="Consulta de dados") abrirConsulta();
+if(tipo==="Exclusão de dados") abrirExclusao();
+if(tipo==="Portabilidade de dados") abrirPortabilidade();
+}
+
+// CONSULTA
+function abrirConsulta(){
+document.body.insertAdjacentHTML("beforeend",`
+<div class="modal">
+<div class="caixa">
+<h3>Consulta de dados</h3>
+<p>Solicitação realizada com sucesso.</p>
+<p>Verifique seu e-mail cadastrado (incluindo spam).</p>
+<button onclick="fecharModal()">Fechar</button>
+</div>
+</div>
+`);
+}
+
+// EXCLUSÃO
+function abrirExclusao(){
+document.body.insertAdjacentHTML("beforeend",`
+<div class="modal">
+<div class="caixa">
+<h3>Exclusão de dados</h3>
+<p>Esta ação é irreversível. Deseja continuar?</p>
+<button onclick="confirmarExclusao()">Sim</button>
+<button onclick="fecharModal()">Não</button>
+</div>
+</div>
+`);
+}
+
+function confirmarExclusao(){
+window.location.href="index.html";
+}
+
+// PORTABILIDADE
+function abrirPortabilidade(){
+document.body.insertAdjacentHTML("beforeend",`
+
+<div class="modal">
+<div class="caixa">
+
+<div onclick="fecharModal()" style="
+position:absolute;
+top:10px;
+right:15px;
+cursor:pointer;
+font-weight:bold;">✖</div>
+
+<h3>Portabilidade de dados</h3>
+
+<input id="empresa" placeholder="Nome da empresa"
+style="width:100%;padding:10px;margin-bottom:10px;">
+
+<input id="cnpj" placeholder="CNPJ (14 caracteres)"
+oninput="formatarCNPJ(this)"
+style="width:100%;padding:10px;margin-bottom:10px;">
+
+<input id="email" placeholder="E-mail da empresa"
+style="width:100%;padding:10px;margin-bottom:10px;">
+
+<button onclick="enviarPort()">Enviar</button>
+<button onclick="fecharModal()">Cancelar</button>
+
+<div id="msgPort"></div>
+
+</div>
+</div>
+`);
+}
+
+// CNPJ
+function formatarCNPJ(input){
+let valor=input.value.replace(/[^a-zA-Z0-9]/g,'');
+input.value=valor.substring(0,14);
+}
+
+// ENVIO
+function enviarPort(){
+let email=document.getElementById("email").value;
+let msg=document.getElementById("msgPort");
+
+if(!email.includes("@")){
+msg.innerHTML="<span style='color:red'>E-mail inválido</span>";
+return;
+}
+
+msg.innerHTML="<span style='color:green'>Solicitação enviada com sucesso ✅</span>";
+}
+
+// FECHAR
+function fecharModal(){
+let m=document.querySelector(".modal");
+if(m) m.remove();
+}
+
+// START
+inicio();
+
+</script>
+
+</body>
+</html>

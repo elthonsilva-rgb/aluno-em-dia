@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
+<title>Gestão do Aluno</title>
+</head>
+
+<body>
+
+<header>
+<button onclick="voltar()">←</button>
+<h1 id="titulo">Gestão do Aluno</h1>
+<button onclick="logout()">Sair</button>
+</header>
+
+<div class="card" style="
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:15px;
+" onclick="irCadastro()">
+
+  <span style="color:green;">➕</span> Cadastrar aluno
+
+</div>
+
+
+<main>
+
+<div class="card" style="
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+">
+
+  <!-- LADO ESQUERDO (FORMULÁRIO) -->
+  <div style="width:70%;">
+
+    <label>Selecionar nível:</label><br><br>
+    <select id="selectNivel" onchange="carregarTurmas()">
+      <option value="">--Escolha--</option>
+      <option value="FI">Fundamental I</option>
+      <option value="FII">Fundamental II</option>
+    </select>
+
+    <br><br>
+
+    <label>Selecionar ano e turma:</label><br><br>
+   <select id="selectTurma" onchange="filtrarAlunos(); atualizarProfessor();">
+
+      <option value="">--Escolha--</option>
+    </select>
+
+    <br><br>
+
+    <label>Selecionar aluno:</label><br><br>
+    <select id="selectAluno" onchange="selecionarAluno()">
+      <option value="">--Escolha--</option>
+    </select>
+
+  </div>
+
+<div style="
+  width:30%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+">
+
+<!-- ✅ PROFESSOR (ESQUERDA) -->
+ <div style="
+  width:48%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+">
+  <img id="fotoProfessor"
+       style="width:80px; height:80px; object-fit:cover; border-radius:50%; display:none;">
+
+  <div id="legendaProfessor"
+       style="font-size:11px; margin-top:5px; display:none;">
+    <b>Professor(a)</b><br>
+  </div>
+</div>
+
+  <!-- ✅ COORDENADOR (DIREITA) -->
+ <div style="
+  width:48%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+">
+  <img src="coordenador.jpg"
+       style="width:80px; height:80px; object-fit:cover; border-radius:50%;">
+
+  <div style="font-size:11px; margin-top:5px;">
+    <b>Coordenador(a)<br>
+	Ananda Izis<br>
+    Ens. Fundamental I e II</b>
+  </div>
+</div>
+</div>
+
+</div>
+
+
+  </div>
+
+</div>
+
+<br><br>
+
+
+<div id="menuAluno" style="display:none;">
+
+<div class="card" onclick="abrirAluno('perfil')">
+  👤 Perfil
+
+  <div id="perfil" class="areaAluno" onclick="event.stopPropagation()">
+    
+    <div class="card" id="dadosPerfil"></div>
+
+    <div class="card" style="text-align:center;">
+      <button onclick="editarPerfil()">✏️ Editar Dados</button>
+    </div>
+
+  </div>
+</div>
+
+  <div class="card" onclick="abrirAluno('desempenho')">
+    📊 Desempenho
+    <div id="desempenho" class="areaAluno" onclick="event.stopPropagation()">
+      <div class="card">
+        <div id="resumo"></div>
+        <div id="listaNotas"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" onclick="abrirAluno('historico')">
+    📈 Histórico
+    <div id="historico" class="areaAluno" onclick="event.stopPropagation()">
+      <div class="card" id="historicoDados"></div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+</main>
+
+</body>
+</html> 

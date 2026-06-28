@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Conteúdo Educacional</title>
+</head>
+
+<body style="margin:0; font-family:Arial; background:#f5f5f5;">
+
+<!-- ✅ HEADER -->
+<div style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#3b6edc;
+  color:white;
+">
+
+  <div onclick="voltar()" style="cursor:pointer;font-size:20px;">←</div>
+
+  <div style="font-size:18px; font-weight:bold;">
+    Conteúdo Educacional
+  </div>
+
+  <div onclick="sair()" style="
+    background:#2f54c2;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+  ">Sair</div>
+
+</div>
+
+<!-- ✅ CONTAINER ANOS -->
+<div id="anos" style="
+  display:flex;
+  gap:15px;
+  padding:20px;
+  overflow-x:auto;
+"></div>
+
+<!-- ✅ CONTEÚDO -->
+<div id="conteudo" style="padding:20px;"></div>
+
+<script>
+
+// ✅ NAVEGAÇÃO
+function voltar(){
+  window.location.href = "menu.html";
+}
+
+function sair(){
+  window.location.href = "index.html";
+}
+
+// ✅ DADOS REAIS (POR ANO)
+const dados = {
+  1: ["https://www.youtube.com/watch?v=maXdSId0FvI","https://www.youtube.com/watch?v=y9AbwrdOhTw","https://www.youtube.com/watch?v=D0PSNA4na3M"],
+  2: ["https://www.youtube.com/watch?v=D-kpguzEO0s","https://www.youtube.com/watch?v=PabyuB5v-W8","https://www.youtube.com/watch?v=eQ_mptGOHW8"],
+  3: ["https://www.youtube.com/watch?v=L4smfNoMKb8","https://www.youtube.com/watch?v=mcCXY-N8CXs","https://www.youtube.com/watch?v=zoS60fupFQU"],
+  4: ["https://www.youtube.com/watch?v=3JZ_D3ELwOQ","https://www.youtube.com/watch?v=Zi_XLOBDo_Y","https://www.youtube.com/watch?v=ktvTqknDobU"],
+  5: ["https://www.youtube.com/watch?v=JGwWNGJdvx8","https://www.youtube.com/watch?v=RgKAFK5djSk","https://www.youtube.com/watch?v=2Vv-BfVoq4g"],
+  6: ["https://www.youtube.com/watch?v=fRh_vgS2dFE","https://www.youtube.com/watch?v=60ItHLz5WEA","https://www.youtube.com/watch?v=hT_nvWreIhg"],
+  7: ["https://www.youtube.com/watch?v=kXYiU_JCYtU","https://www.youtube.com/watch?v=ktvTqknDobU","https://www.youtube.com/watch?v=Zi_XLOBDo_Y"],
+  8: ["https://www.youtube.com/watch?v=JGwWNGJdvx8","https://www.youtube.com/watch?v=2Vv-BfVoq4g","https://www.youtube.com/watch?v=RgKAFK5djSk"],
+  9: ["https://www.youtube.com/watch?v=fRh_vgS2dFE","https://www.youtube.com/watch?v=60ItHLz5WEA","https://www.youtube.com/watch?v=hT_nvWreIhg"]
+};
+
+window.onload = function(){
+
+  const containerConteudo = document.getElementById("conteudo");
+  const container = document.getElementById("anos");
+
+  if(!container){
+    console.error("Elemento #anos não encontrado");
+
+  } else {
+
+    for(let i=1;i<=9;i++){
+
+      let card = document.createElement("div");
+
+      card.style.cssText = `
+        min-width:120px;
+        height:110px;
+        background:white;
+        border-radius:12px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        border:2px solid #ccc;
+        transition:0.3s;
+      `;
+
+      card.innerHTML = `
+        <div style="font-size:28px;">📚📘📗</div>
+        <div><b>${i}º Ano</b></div>
+      `;
+
+      card.onmouseover = () => {
+        card.style.border = "2px solid #3b6edc";
+        card.style.transform = "scale(1.05)";
+      };
+
+      card.onmouseout = () => {
+        card.style.border = "2px solid #ccc";
+        card.style.transform = "scale(1)";
+      };
+
+card.onclick = () => {
+
+  // remove seleção de todos
+  document.querySelectorAll("#anos div").forEach(c => {
+    c.style.background = "white";
+  });
+
+  // destaca selecionado
+  card.style.background = "#cce5ff";
+
+  // ✅ chama o menu novo
+  mostrarMenuAno(i);
+
+};
+
+      // ✅ ESSENCIAL
+      container.appendChild(card);
+    }
+
+  }
+
+};
+
+
+// ✅ LISTA
+function lista(videos, ano){
+
+  let html = "";
+
+  for(let i=0;i<10;i++){
+    let url = videos[i % videos.length];
+
+    html += `
+      <div onclick="abrir('${url}')" style="
+        padding:10px;
+        border-bottom:1px solid #eee;
+        cursor:pointer;
+      ">
+        ▶ Vídeo Aula ${i+1} - ${ano}º Ano
+      </div>
+    `;
+  }
+
+  return html;
+}
+
+
+
+
+// ✅ CARREGAR CONTEÚDO
+function carregar(ano){
+
+  let vids = dados[ano];
+
+  document.getElementById("conteudo").innerHTML = `
+    <h2>${ano}º Ano</h2>
+<div onclick="mostrarMenuAno(${ano})" style="
+    cursor:pointer;
+    margin-bottom:15px;
+    font-weight:bold;
+    color:#3b6edc;
+  ">
+    ⬅ Voltar
+  </div>
+    <div style="display:flex; gap:20px; overflow-x:auto;">
+
+      <div style="min-width:250px;background:white;padding:15px;border-radius:10px;">
+       <h3>📘 Matemática</h3>
+${lista(vids, ano)}
+
+      </div>
+
+      <div style="min-width:250px;background:white;padding:15px;border-radius:10px;">
+       <h3>📖 Português</h3>
+${lista(vids, ano)}
+      </div>
+
+      <div style="min-width:250px;background:white;padding:15px;border-radius:10px;">
+        <h3>🌱 Ciências</h3>
+        ${lista(vids, ano)}
+      </div>
+
+    </div>
+  `;
+}
+
+// ✅ ABRIR VIDEO
+function abrir(url){
+  window.open(url);
+}
+
+function mostrarMenuAno(ano){
+
+  document.getElementById("conteudo").innerHTML = `
+
+  
+<h2>${ano}º Ano</h2>
+<div style="display:flex; gap:25px; flex-wrap:wrap; padding:10px;">
+
+  <!-- 🎥 VIDEOAULAS -->
+  <div onclick="carregar(${ano})"
+       onmouseover="this.style.border='3px solid #3b6edc'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.15)'"
+       onmouseout="this.style.border='3px solid #e0e0e0'; this.style.transform='scale(1)'; this.style.boxShadow='none'"
+       style="
+    min-width:240px;
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    cursor:pointer;
+    border:3px solid #e0e0e0;
+    transition:0.25s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  ">
+    <div style="font-size:45px;">🎥</div>
+    <div style="margin-top:10px; font-weight:bold;">Videoaulas</div>
+  </div>
+
+  <!-- 🧠 EXERCÍCIOS -->
+  <div onclick="exercicios(${ano})"
+       onmouseover="this.style.border='3px solid #3b6edc'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.15)'"
+       onmouseout="this.style.border='3px solid #e0e0e0'; this.style.transform='scale(1)'; this.style.boxShadow='none'"
+       style="
+    min-width:240px;
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    cursor:pointer;
+    border:3px solid #e0e0e0;
+    transition:0.25s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  ">
+    <div style="font-size:45px;">🧠</div>
+    <div style="margin-top:10px; font-weight:bold;">Exercícios</div>
+  </div>
+
+  <!-- 📊 SIMULADOS -->
+  <div onclick="simulados(${ano})"
+       onmouseover="this.style.border='3px solid #3b6edc'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.15)'"
+       onmouseout="this.style.border='3px solid #e0e0e0'; this.style.transform='scale(1)'; this.style.boxShadow='none'"
+       style="
+    min-width:240px;
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    cursor:pointer;
+    border:3px solid #e0e0e0;
+    transition:0.25s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  ">
+    <div style="font-size:45px;">📊</div>
+    <div style="margin-top:10px; font-weight:bold;">Simulados</div>
+ </div>
+
+</div>
+`;
+}
+
+function exercicios(ano){
+
+ const links = [
+  {
+    nome: "🧮 Exercícios de Matemática",
+    url: "https://www.todamateria.com.br/exercicios-de-matematica/"
+  },
+  {
+    nome: "📖 Exercícios de Português",
+    url: "https://www.todamateria.com.br/exercicios-de-portugues/"
+  },
+  {
+    nome: "🌱 Exercícios de Ciências",
+    url: "https://www.todamateria.com.br/exercicios-de-ciencias/"
+  }
+];
+
+  let html = `
+  <div onclick="mostrarMenuAno(${ano})" style="
+    cursor:pointer;
+    margin-bottom:15px;
+    font-weight:bold;
+    color:#3b6edc;
+  ">
+    ⬅ Voltar
+  </div>
+
+  <h2>Exercícios - ${ano}º Ano</h2>
+`;
+
+  links.forEach((item, i) => {
+    html += `
+      <div onclick="window.open('${item.url}')" 
+     onmouseover="this.style.border='2px solid #3b6edc'; this.style.transform='scale(1.02)'" 
+     onmouseout="this.style.border='2px solid #ddd'; this.style.transform='scale(1)'"
+     style="
+  background:white;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  cursor:pointer;
+  border:2px solid #ddd;
+  transition:0.2s;
+">
+        🧠 ${item.nome} - ${ano}º Ano
+      </div>
+    `;
+  });
+
+  document.getElementById("conteudo").innerHTML = html;
+}
+function simulados(ano){
+
+  const simulados = [
+    {
+      nome: "🧮 Simulado de Matemática",
+      url: "https://www.todamateria.com.br/exercicios-de-matematica/"
+    },
+    {
+      nome: "📖 Simulado de Português",
+      url: "https://www.todamateria.com.br/exercicios-de-portugues/"
+    },
+    {
+      nome: "🌱 Simulado de Ciências",
+      url: "https://www.todamateria.com.br/exercicios-de-ciencias/"
+    }
+  ];
+
+ let html = `
+  <div onclick="mostrarMenuAno(${ano})" style="
+    cursor:pointer;
+    margin-bottom:15px;
+    font-weight:bold;
+    color:#3b6edc;
+  ">
+    ⬅ Voltar
+  </div>
+
+  <h2>Simulados - ${ano}º Ano</h2>
+`;
+``
+
+  simulados.forEach(item => {
+    html += `
+     <div onclick="window.open('${item.url}')" 
+     onmouseover="this.style.border='2px solid #3b6edc'; this.style.transform='scale(1.02)'" 
+     onmouseout="this.style.border='2px solid #ddd'; this.style.transform='scale(1)'"
+     style="
+  background:white;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  cursor:pointer;
+  border:2px solid #ddd;
+  transition:0.2s;
+">
+        ${item.nome} - ${ano}º Ano
+      </div>
+    `;
+  });
+
+  document.getElementById("conteudo").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

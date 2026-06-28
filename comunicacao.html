@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Comunicação</title>
+</head>
+
+<body style="margin:0;font-family:Arial;background:#f5f5f5;">
+
+<!-- HEADER -->
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#3b6edc;color:white;">
+  <div onclick="voltar()" style="cursor:pointer;font-size:20px;">←</div>
+  <div style="font-weight:bold;">Comunicação</div>
+  <div onclick="sair()" style="cursor:pointer;">Sair</div>
+</div>
+
+<div id="conteudo" style="padding:20px;"></div>
+
+<script>
+
+// ================= NAV =================
+function voltar(){ window.location.href="menu.html"; }
+function sair(){ window.location.href="index.html"; }
+
+// ================= CONTROLE =================
+let notifAluno = true;
+let notifPais = true;
+let indiceAtual = 0;
+let indicePais = 0;
+
+// ================= ALUNOS =================
+let conversas = [
+{nome:"João Silva", turma:"3º Ano", pergunta:"Como resolver divisão com resto?"},
+{nome:"Maria Souza", turma:"4º Ano", pergunta:"O que é fração?"},
+{nome:"Pedro Lima", turma:"5º Ano", pergunta:"Como fazer multiplicação?"},
+{nome:"Ana Beatriz", turma:"2º Ano", pergunta:"O que significa soma?"},
+{nome:"Carlos Henrique", turma:"6º Ano", pergunta:"Como calcular porcentagem?"},
+{nome:"Fernanda Costa", turma:"7º Ano", pergunta:"O que é equação?"},
+{nome:"Lucas Martins", turma:"4º Ano", pergunta:"Como identificar substantivo?"},
+{nome:"Beatriz Almeida", turma:"5º Ano", pergunta:"O que é verbo?"},
+{nome:"Rafael Gomes", turma:"8º Ano", pergunta:"Como funciona regra de três?"},
+{nome:"Juliana Pereira", turma:"6º Ano", pergunta:"O que é sujeito?"},
+{nome:"Bruno Santos", turma:"3º Ano", pergunta:"Como fazer adição com números grandes?"},
+{nome:"Patrícia Rocha", turma:"7º Ano", pergunta:"O que é predicado?"},
+{nome:"Ricardo Nunes", turma:"9º Ano", pergunta:"Como calcular área?"},
+{nome:"Amanda Teixeira", turma:"2º Ano", pergunta:"Como separar sílabas?"},
+{nome:"Diego Ribeiro", turma:"5º Ano", pergunta:"O que são pronomes?"},
+{nome:"Camila Ferreira", turma:"8º Ano", pergunta:"Como resolver expressões?"},
+{nome:"Eduardo Barros", turma:"6º Ano", pergunta:"O que é advérbio?"},
+{nome:"Larissa Duarte", turma:"4º Ano", pergunta:"Como escrever corretamente?"},
+{nome:"Gustavo Carvalho", turma:"7º Ano", pergunta:"O que é sujeito oculto?"},
+{nome:"Letícia Monteiro", turma:"3º Ano", pergunta:"Como fazer subtração com reserva?"}
+];
+
+// ================= PAIS =================
+let pais = [
+{nome:"Carlos Mendes", aluno:"Lucas Mendes", turma:"3º Ano", pergunta:"Gostaria de saber como está o desempenho do meu filho Lucas Mendes em matemática."},
+{nome:"Fernanda Rocha", aluno:"Ana Rocha", turma:"4º Ano", pergunta:"Há dificuldades de aprendizagem para Ana Rocha?"},
+{nome:"Ricardo Alves", aluno:"Pedro Alves", turma:"5º Ano", pergunta:"Pedro Alves acompanha o conteúdo adequadamente?"},
+{nome:"Patrícia Gomes", aluno:"Mariana Gomes", turma:"6º Ano", pergunta:"Mariana Gomes precisa de reforço escolar?"},
+{nome:"Juliana Martins", aluno:"Bruno Martins", turma:"3º Ano", pergunta:"Bruno Martins participa das aulas?"},
+{nome:"Roberto Lima", aluno:"Carolina Lima", turma:"7º Ano", pergunta:"Houve ocorrência disciplinar com Carolina Lima?"},
+{nome:"Camila Duarte", aluno:"Felipe Duarte", turma:"4º Ano", pergunta:"Felipe Duarte entrega atividades?"},
+{nome:"Eduardo Nunes", aluno:"Rafael Nunes", turma:"5º Ano", pergunta:"Como ajudar Rafael Nunes nos estudos?"},
+{nome:"Sandra Teixeira", aluno:"Larissa Teixeira", turma:"6º Ano", pergunta:"Larissa Teixeira está com bom rendimento?"},
+{nome:"Marcos Barbosa", aluno:"Daniel Barbosa", turma:"8º Ano", pergunta:"Daniel Barbosa precisa de acompanhamento?"},
+{nome:"Luciana Ribeiro", aluno:"Gabriel Ribeiro", turma:"7º Ano", pergunta:"Gabriel Ribeiro tem dificuldades?"},
+{nome:"Gustavo Ferreira", aluno:"Eduarda Ferreira", turma:"6º Ano", pergunta:"Como melhorar o desempenho de Eduarda Ferreira?"},
+{nome:"Vanessa Costa", aluno:"Matheus Costa", turma:"4º Ano", pergunta:"Matheus Costa participa das atividades?"},
+{nome:"Renata Souza", aluno:"Beatriz Souza", turma:"3º Ano", pergunta:"Há observações sobre Beatriz Souza?"},
+{nome:"Cláudio Santos", aluno:"Lucas Santos", turma:"5º Ano", pergunta:"Lucas Santos teve queda no desempenho?"},
+{nome:"Daniela Carvalho", aluno:"Isabela Carvalho", turma:"6º Ano", pergunta:"Isabela precisa de reforço?"},
+{nome:"André Lopes", aluno:"João Lopes", turma:"2º Ano", pergunta:"João Lopes acompanha a turma?"},
+{nome:"Simone Barros", aluno:"Amanda Barros", turma:"7º Ano", pergunta:"Há recomendações pedagógicas para Amanda?"},
+{nome:"Bruno Tavares", aluno:"Pedro Tavares", turma:"8º Ano", pergunta:"Como está a evolução de Pedro Tavares?"},
+{nome:"Aline Monteiro", aluno:"Julia Monteiro", turma:"3º Ano", pergunta:"Como melhorar a organização de Julia Monteiro?"}
+];
+
+// ================= UI =================
+function botaoVoltar(){
+return `<div onclick="voltarInicio()" style="margin-bottom:15px;color:#3b6edc;cursor:pointer;"><b>⬅ Voltar</b></div>`;
+}
+
+function card(icon,titulo,acao,notif){
+return `
+<div onclick="${acao}" style="position:relative;min-width:240px;background:white;padding:25px;border-radius:14px;border:3px solid #ddd;cursor:pointer;text-align:center;">
+${notif?'<div style="position:absolute;top:10px;right:10px;width:12px;height:12px;background:red;border-radius:50%;"></div>':''}
+<div style="font-size:45px;">${icon}</div>
+<b>${titulo}</b>
+</div>`;
+}
+
+// ================= TELA INICIAL =================
+function inicio(){
+document.getElementById("conteudo").innerHTML=`
+<h2>Comunicação</h2>
+<div style="display:flex;gap:25px;flex-wrap:wrap;">
+${card("💬","Chat aluno-professor","chat()",notifAluno)}
+${card("👨‍👩‍👧","Chat com responsáveis","chatPais()",notifPais)}
+${card("🔔","Notificações","notificacoes()")}
+${card("📢","Avisos","avisos()")}
+${card("👥","Fórum","forum()")}
+</div>`;
+}
+
+// ================= VOLTAR =================
+function voltarInicio(){
+inicio();
+
+setTimeout(()=>{
+  indiceAtual = (indiceAtual + 1) % conversas.length;
+  indicePais = (indicePais + 1) % pais.length;
+
+  notifAluno = true;
+  notifPais = true;
+
+  let t = document.querySelector("h2");
+  if(t && t.innerText === "Comunicação"){
+    inicio();
+  }
+},3500);
+}
+
+// ================= CHAT ALUNO =================
+function chat(){
+temNotificacao=false;
+let a=conversas[indiceAtual];
+
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+<h2>Chat aluno-professor</h2>
+
+<div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;margin-bottom:10px;">
+<b>Aluno:</b> ${a.nome} (${a.turma})<br><br>
+<b>Pergunta:</b> ${a.pergunta}
+</div>
+
+<div id="chat-box"></div>
+
+<input id="msg" style="width:70%;padding:10px;">
+<button onclick="enviarMsg()">Enviar</button>
+`;
+}
+
+function enviarMsg(){
+let input=document.getElementById("msg");
+let texto=input.value.trim();
+if(!texto) return;
+
+let chat=document.getElementById("chat-box");
+chat.innerHTML+=`<p><b>Professor:</b> ${texto}</p>`;
+input.value="";
+}
+
+// ================= CHAT PAIS =================
+function chatPais(){
+ temNotificacao = false;
+let p=pais[indicePais];
+
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+<h2>Chat com responsáveis</h2>
+
+<div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;margin-bottom:10px;">
+<b>Responsável:</b> ${p.nome}<br>
+<b>Aluno:</b> ${p.aluno}<br>
+<b>Turma:</b> ${p.turma}<br><br>
+<b>Mensagem:</b> ${p.pergunta}
+</div>
+
+<div id="chat-box2"></div>
+
+<input id="msg2" style="width:70%;padding:10px;">
+<button onclick="enviarMsgPais()">Enviar</button>
+`;
+}
+
+function enviarMsgPais(){
+let input=document.getElementById("msg2");
+let texto=input.value.trim();
+if(!texto) return;
+
+let chat=document.getElementById("chat-box2");
+chat.innerHTML+=`<p><b>Professor:</b> ${texto}</p>`;
+input.value="";
+}
+
+// ================= NOTIFICAÇÕES =================
+function notificacoes(){
+document.getElementById("conteudo").innerHTML = `
+${botaoVoltar()}
+<h2>Notificações</h2>
+
+${itemNotif("📌 Pendência em atividade avaliativa","detalhe('Pendência','Atividade não lançada no sistema','Atualizar registro')")}
+${itemNotif("📌 Avaliação institucional agendada","detalhe('Avaliação','Aplicação obrigatória','Sexta-feira')")}
+${itemNotif("📌 Lançamento de notas pendente","detalhe('Notas','Pendentes no sistema','Regularizar lançamento')")}
+${itemNotif("📌 Atualização de conteúdo programático","detalhe('Conteúdo','Novo material disponível','Revisar disciplina')")}
+${itemNotif("📌 Convocação para reunião pedagógica","detalhe('Reunião','Segunda-feira 14h','Participação obrigatória')")}
+${itemNotif("📌 Acompanhamento de aluno requerido","detalhe('Aluno','Baixo rendimento','Realizar acompanhamento')")}
+${itemNotif("📌 Planejamento semanal pendente","detalhe('Planejamento','Semana atual','Atualizar conteúdo')")}
+${itemNotif("📌 Registro de frequência inconsistente","detalhe('Frequência','Inconsistência detectada','Revisar registro')")}
+${itemNotif("📌 Atualização de diário de classe","detalhe('Diário','Atualização pendente','Preencher sistema')")}
+${itemNotif("📌 Revisão de avaliações solicitada","detalhe('Avaliações','Revisão necessária','Verificar notas')")}
+${itemNotif("📌 Aluno com baixa frequência","detalhe('Aluno','Frequência crítica','Acompanhar situação')")}
+${itemNotif("📌 Inserção de conteúdos atrasados","detalhe('Conteúdo','Atraso detectado','Regularizar plano')")}
+${itemNotif("📌 Pendência em lançamento de atividade","detalhe('Atividade','Registro não encontrado','Inserir atividade')")}
+${itemNotif("📌 Atualização pedagógica obrigatória","detalhe('Pedagógico','Atualização requerida','Acessar sistema')")}
+${itemNotif("📌 Solicitação de relatório docente","detalhe('Relatório','Solicitado','Entregar no prazo')")}
+${itemNotif("📌 Prazo para envio de notas próximo","detalhe('Notas','Prazo encerrando','Atualizar sistema')")}
+${itemNotif("📌 Avaliação parcial não registrada","detalhe('Avaliação','Ausência de registro','Inserir dados')")}
+${itemNotif("📌 Mudança no cronograma escolar","detalhe('Calendário','Ajuste realizado','Verificar datas')")}
+${itemNotif("📌 Atualização de dados acadêmicos","detalhe('Sistema','Dados desatualizados','Corrigir')")}
+${itemNotif("📌 Controle de desempenho solicitado","detalhe('Desempenho','Análise requerida','Gerar relatório')")}
+`;
+}
+
+function itemNotif(texto,acao){
+return `<div onclick="${acao}" style="background:white;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #ddd;cursor:pointer;">
+${texto}</div>`;
+}
+
+function atividade(){detalhe("Pendência","Turma","Atividade não lançada");}
+function prova(){detalhe("Avaliação","Aplicação obrigatória","Data definida");}
+function notas(){detalhe("Notas","Pendentes","Atualizar sistema");}
+function material(){detalhe("Conteúdo","Atualizado","Revisar");}
+
+function detalhe(t,l1,l2){
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+<h2>${t}</h2>
+<div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;">
+${l1}<br><br>${l2}
+</div>`;
+}
+
+// ================= OUTROS =================
+function avisos(){
+document.getElementById("conteudo").innerHTML = `
+${botaoVoltar()}
+<h2>Avisos da escola</h2>
+
+${itemAviso("📢 Reunião de pais","Agendada para próxima semana")}
+${itemAviso("📢 Evento pedagógico","Semana pedagógica confirmada")}
+${itemAviso("📢 Alteração no calendário","Datas atualizadas")}
+${itemAviso("📢 Formação docente","Curso obrigatório")}
+${itemAviso("📢 Feira de ciências","Participação aberta")}
+${itemAviso("📢 Atualização do sistema","Manutenção programada")}
+${itemAviso("📢 Novo regulamento","Documento disponível")}
+${itemAviso("📢 Avaliação externa","Aplicação confirmada")}
+${itemAviso("📢 Orientação pedagógica","Material liberado")}
+${itemAviso("📢 Supervisão de aulas","Cronograma ativo")}
+${itemAviso("📢 Semana de provas","Datas liberadas")}
+${itemAviso("📢 Projeto interdisciplinar","Participação obrigatória")}
+${itemAviso("📢 Reforço escolar","Horários definidos")}
+${itemAviso("📢 Atualização acadêmica","Sistema liberado")}
+${itemAviso("📢 Diretrizes escolares","Nova política")}
+${itemAviso("📢 Aula especial","Agendada")}
+${itemAviso("📢 Evento institucional","Participar")}
+${itemAviso("📢 Treinamento interno","Confirmado")}
+${itemAviso("📢 Comunicados gerais","Consultar painel")}
+${itemAviso("📢 Mudança curricular","Atualização aplicada")}
+`;
+}
+
+function forum(){
+document.getElementById("conteudo").innerHTML = `
+${botaoVoltar()}
+<h2>Fórum / Comunidade</h2>
+
+${itemForum("💬 Discussão sobre desempenho em matemática")}
+${itemForum("💬 Estratégias de ensino")}
+${itemForum("💬 Práticas pedagógicas")}
+${itemForum("💬 Dificuldades dos alunos")}
+${itemForum("💬 Avaliações escolares")}
+${itemForum("💬 Gestão de sala")}
+${itemForum("💬 Uso de tecnologia")}
+${itemForum("💬 Metodologias ativas")}
+${itemForum("💬 Ensino híbrido")}
+${itemForum("💬 Avaliação diagnóstica")}
+${itemForum("💬 Planejamento de aula")}
+${itemForum("💬 Comunicação com pais")}
+${itemForum("💬 Inclusão escolar")}
+${itemForum("💬 Ensino de leitura")}
+${itemForum("💬 Aprendizagem colaborativa")}
+${itemForum("💬 Ensino de português")}
+${itemForum("💬 Projetos escolares")}
+${itemForum("💬 Acompanhamento pedagógico")}
+${itemForum("💬 Motivação do aluno")}
+${itemForum("💬 Avaliação contínua")}
+`;
+}
+
+function itemAviso(titulo,desc){
+return `
+<div style="background:white;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #ddd;">
+<b>${titulo}</b><br><br>${desc}
+</div>`;
+}
+
+function itemForum(texto){
+return `
+<div style="background:white;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #ddd;">
+${texto}
+</div>`;
+}
+
+// START
+inicio();
+
+</script>
+
+</body>
+</html>

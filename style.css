@@ -1,76 +1,116 @@
-	body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f6f8;
+body { margin:0; font-family:Arial; }
+
+/* LOGIN */
+.bg {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(180deg,#2563EB,#031e57);
 }
 
-/* Container central */
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+.login-box {
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    width:300px;
+    text-align:center;
 }
 
-/* Título */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+input {
+    width:90%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
 }
 
-/* Grid responsivo */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
+button {
+    padding:10px;
+    background:#2563EB;
+    color:white;
+    border:none;
+    border-radius:5px;
 }
 
-/* Cards */
+.error { color:red; }
+
+/* HEADER */
+header {
+    background:#2f5fd0;
+    color:white;
+    display:grid;
+    grid-template-columns:60px 1fr 80px;
+    padding:10px;
+    align-items:center;
+}
+
+header h1 { text-align:center; font-size:20px; }
+
+main { padding:15px; }
+
 .card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    text-align: center;
-    font-size: 18px;
-    transition: 0.2s;
+    background:#ddd;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:10px;
+    cursor:pointer;
 }
 
-.card:hover {
-    background: #e3f2fd;
-    transform: scale(1.03);
+.areaAluno {
+  display: none;
+  margin-top: 10px;
 }
 
-/* Caixas internas */
-.box {
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* DESEMPENHO */
+.resumo { text-align:center; }
+
+.barra-geral {
+    background:#ddd;
+    height:10px;
+    border-radius:20px;
+    width:70%;
+    margin:5px auto;
 }
 
-/* Botão */
-.btn {
-    display: block;
-    width: 150px;
-    margin: 20px auto 0;
-    padding: 10px;
-    background: #2d89ef;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.barra {
+    background:#eee;
+    height:8px;
+    border-radius:20px;
 }
 
-/* 📱 Ajuste para celular */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 22px;
-    }
+.fill {
+    height:8px;
+    border-radius:20px;
+}
 
-    .card {
-        font-size: 16px;
-        padding: 15px;
-    }
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2f5cc8;
+  padding: 10px 20px;
+}
+
+.titulo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-header {
+  width: 50px; /* ajuste ideal */
+  height: auto;
+}
+
+.btn-header {
+  background: #3d6ae0;
+  border: none;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  cursor: pointer;
 }

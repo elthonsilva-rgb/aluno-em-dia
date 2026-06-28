@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="script.js"></script>
+
+<style>
+body{font-family:Arial;background:#f4f6f9;}
+.card{background:white;padding:15px;margin:20px;border-radius:10px;}
+</style>
+</head>
+
+<body onload="popularSelect('sel')">
+
+<div class="card">
+<select id="sel" onchange="mostrar(this.value)">
+<option value="">Selecionar aluno</option>
+</select>
+</div>
+
+<div id="hist" class="card"></div>
+
+<script>
+function mostrar(){
+hist.innerHTML=`
+✔ Evolução positiva<br>
+✔ Participação ativa<br>
+✔ Entregas em dia
+`;
+}
+</script>
+
+</body>
+</html>
+</html>

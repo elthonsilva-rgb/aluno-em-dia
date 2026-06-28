@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="script.js"></script>
+<style>
+body{font-family:Arial;background:#f4f6f9;}
+.card{background:white;padding:15px;margin:20px;border-radius:10px;}
+</style>
+</head>
+
+<body onload="popularSelect('sel')">
+
+<div class="card">
+<select id="sel" onchange="mostrar(this.value)">
+<option value="">Selecionar aluno</option>
+</select>
+</div>
+
+<div id="dados" class="card"></div>
+
+<script>
+function mostrar(i){
+if(i==="") return;
+
+let a=alunos[i];
+let nivel=a.idade<=10?"Fundamental I":"Fundamental II";
+
+dados.innerHTML=`
+<b>${a.nome}</b><br>
+RA: ${a.ra}<br>
+Turma: ${a.turma}<br>
+Nível: ${nivel}
+`;
+}
+</script>
+
+</body>
+</html>

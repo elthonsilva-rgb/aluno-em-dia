@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Usuário</title>
+</head>
+
+<body style="margin:0;font-family:Arial;background:#f5f5f5;">
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#3b6edc;color:white;">
+  <div onclick="voltar()" style="cursor:pointer;font-size:20px;">←</div>
+  <div style="font-weight:bold;">Usuário</div>
+  <div onclick="sair()" style="cursor:pointer;">Sair</div>
+</div>
+
+<div id="conteudo" style="padding:20px;"></div>
+
+<script>
+
+// ================= USUÁRIO =================
+let usuarioLogado = localStorage.getItem("usuario") || "admin";
+
+// ✅ COLOQUE AQUI (fora de qualquer função!)
+function formatarNome(nome){
+  return nome.charAt(0).toUpperCase() + nome.slice(1);
+}
+function obterPerfil(usuario){
+
+  let senha = localStorage.getItem("senha");
+
+  // ✅ REGRA PRIORITÁRIA
+  if(senha === "123456") return "Pais";
+
+  if(usuario === "admin") return "Administrador";
+  if(usuario === "ananda") return "Professor";
+  if(usuario === "pai") return "Pais";
+
+  return "Aluno";
+}
+
+
+let perfilLogado = obterPerfil(usuarioLogado);
+
+// ================= RESET SENHA =================
+function resetarSenha(){
+  let chave = "senha_" + usuarioLogado;
+  localStorage.setItem(chave,"123");
+}
+
+// ================= NAV =================
+function voltar(){
+  resetarSenha();
+  window.location.href="menu.html";
+}
+
+function sair(){
+  resetarSenha();
+  window.location.href="index.html";
+}
+
+// ================= UI =================
+function botaoVoltar(){
+return `<div onclick="inicio()" style="margin-bottom:15px;color:#3b6edc;cursor:pointer;font-weight:bold;">⬅ Voltar</div>`;
+}
+
+function card(icon,titulo,acao){
+return `
+<div onclick="${acao}" 
+style="min-width:240px;background:white;padding:25px;border-radius:14px;border:3px solid #ddd;cursor:pointer;text-align:center;"
+onmouseover="this.style.border='3px solid #3b6edc'"
+onmouseout="this.style.border='3px solid #ddd'">
+<div style="font-size:45px;">${icon}</div>
+<b>${titulo}</b>
+</div>`;
+}
+
+// ================= INICIO =================
+function inicio(){
+
+  // ✅ sempre reseta ao voltar pra home
+  resetarSenha();
+
+  document.getElementById("conteudo").innerHTML=`
+  <h2>Usuário</h2>
+
+  <div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;margin-bottom:20px;">
+  <b>Usuário:</b> ${formatarNome(usuarioLogado)}<br><br>
+  <b>Perfil:</b> ${perfilLogado}<br><br>
+  <b>Status:</b> Ativo
+  </div>
+
+  <div style="display:flex;gap:25px;flex-wrap:wrap;">
+  ${card("🔐","Login e autenticação","login()")}
+  ${card("👤","Perfis","perfis()")}
+  ${card("⚙️","Configurações","config()")}
+  ${card("🛡️","Privacidade","privacidade()")}
+  </div>`;
+}
+
+// ================= LOGIN =================
+function login(){
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+
+<h2>Login e autenticação</h2>
+
+<div style="background:white;padding:20px;border-radius:10px;border:2px solid #ddd;margin-bottom:20px;">
+<b>Usuário:</b> ${formatarNome(usuarioLogado)}
+<br><br>
+<b>Perfil:</b> ${perfilLogado}<br><br>
+<b>Status:</b> autenticado<br><br>
+</div>
+
+<button onclick="abrirModalSenha()" style="
+padding:10px 20px;
+background:#3b6edc;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;">
+Alterar senha
+</button>
+`;
+}
+
+// ================= MODAL =================
+function abrirModalSenha(){
+document.body.insertAdjacentHTML("beforeend",`
+<div id="modalSenha" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;">
+
+<div style="background:white;padding:25px;border-radius:10px;width:350px;position:relative;">
+
+<div onclick="fecharModal()" style="position:absolute;top:10px;right:15px;cursor:pointer;">✖</div>
+
+<h3>Alteração de senha</h3>
+
+<input id="senhaAtual" type="password" placeholder="Senha atual" style="width:100%;padding:10px;margin-bottom:10px;">
+<input id="novaSenha" type="password" placeholder="Nova senha" style="width:100%;padding:10px;margin-bottom:10px;">
+<input id="confSenha" type="password" placeholder="Confirmar senha" style="width:100%;padding:10px;margin-bottom:10px;">
+
+<button onclick="alterarSenha()" style="width:100%;padding:10px;background:#28a745;color:white;border:none;border-radius:6px;">
+Salvar nova senha
+</button>
+
+<div id="msgSenha" style="margin-top:10px;"></div>
+
+</div>
+</div>
+`);
+}
+
+function fecharModal(){
+document.getElementById("modalSenha").remove();
+}
+
+// ================= ALTERAR SENHA =================
+function alterarSenha(){
+
+let atual = document.getElementById("senhaAtual").value;
+let nova = document.getElementById("novaSenha").value;
+let conf = document.getElementById("confSenha").value;
+let msg = document.getElementById("msgSenha");
+
+let chave = "senha_" + usuarioLogado;
+let senha = localStorage.getItem(chave) || "123";
+
+if(atual !== senha){
+  msg.innerHTML = "<span style='color:red;'>Senha atual incorreta</span>";
+  return;
+}
+
+if(nova.length < 3){
+  msg.innerHTML = "<span style='color:red;'>Senha muito curta</span>";
+  return;
+}
+
+if(nova !== conf){
+  msg.innerHTML = "<span style='color:red;'>Confirmação diferente</span>";
+  return;
+}
+
+localStorage.setItem(chave,nova);
+msg.innerHTML = "<span style='color:green;'>Senha alterada ✅</span>";
+}
+
+// ================= PERFIS =================
+function perfis(){
+document.getElementById("conteudo").innerHTML=`
+${botaoVoltar()}
+
+<h2>Perfis do sistema</h2>
+
+${perfilItem("👨‍🎓","Aluno","Acesso a conteúdos, tarefas e acompanhamento escolar")}
+${perfilItem("👨‍👩‍👧","Pais","Acompanhamento escolar, notas, frequência e comunicação com a instituição")}
+${perfilItem("👨‍🏫","Professor","Gestão de turmas, avaliações e comunicação com responsáveis")}
+${perfilItem("👨‍💼","Administrador","Controle completo do sistema, usuários e dados acadêmicos")}
+
+`;
+}
+
+
+function perfilItem(icon,nome,desc){
+
+let ativo = nome === perfilLogado;
+
+return `
+<div
+onmouseover="this.style.border='2px solid #3b6edc'"
+onmouseout="this.style.border='2px solid ${ativo ? '#28a745' : '#ddd'}'"
+style="
+background:${ativo ? '#e8f5e9' : 'white'};
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+border:2px solid ${ativo ? '#28a745' : '#ddd'};
+transition:0.2s;
+">
+
+<div style="font-size:18px;">
+<b>${icon} ${nome}</b>
+</div>
+
+<br>
+
+${desc}
+
+${ativo ? '<br><br><b style="color:#28a745;">✔ Perfil ativo</b>' : ''}
+
+</div>
+`;
+}
+
+// ================= OUTROS =================
+function config(){
+document.getElementById("conteudo").innerHTML = `
+${botaoVoltar()}
+
+<h2>Configurações pessoais</h2>
+
+${itemConfig("🔐","Alterar senha dos colaboradores","Gerencie a tenha de terceiros de acesso ao sistema (via Login)")}
+${itemConfig("📧","Alterar e-mail dos colaboradores","Atualize endereço de contato de terceiros")}
+${itemConfig("🔔","Notificações","Configure alertas e avisos do sistema")}
+${itemConfig("🎨","Tema do sistema","Defina aparência clara ou escura")}
+${itemConfig("🌐","Idioma","Selecione o idioma do sistema")}
+${itemConfig("📱","Dispositivos conectados","Gerencie acessos ativos")}
+${itemConfig("🔊","Preferências de som","Ativar ou desativar sons")}
+${itemConfig("📊","Preferências de uso","Configuração de comportamento")}
+${itemConfig("🧾","Histórico de alterações","Ver mudanças recentes")}
+${itemConfig("⚙️","Configurações avançadas","Ajustes técnicos do sistema")}
+
+`;
+}
+
+function privacidade(){
+document.getElementById("conteudo").innerHTML = `
+${botaoVoltar()}
+
+<h2>Privacidade</h2>
+
+${itemPriv("🔐","Dados pessoais","Gerencie suas informações cadastradas no sistema")}
+${itemPriv("🔒","Segurança da conta","Controle acesso e sessões ativas")}
+${itemPriv("🧾","Histórico de acessos","Visualize logins recentes")}
+${itemPriv("📊","Uso de dados","Controle permissões e utilização")}
+${itemPriv("👁️","Visibilidade de perfil","Defina quem pode ver suas informações")}
+${itemPriv("📍","Localização","Controle uso de dados de localização")}
+${itemPriv("🔔","Permissões de notificação","Gerenciar envio de alertas")}
+${itemPriv("📁","Compartilhamento de dados","Controle integração com outros usuários")}
+${itemPriv("🛡️","Proteção de conta","Configurações adicionais de segurança")}
+${itemPriv("⚙️","Configurações avançadas","Ajustes de privacidade do sistema")}
+
+`;
+}
+
+function item(t,d){
+return `<div style="background:white;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #ddd;"><b>${t}</b><br>${d}</div>`;
+}
+
+function itemPriv(icon,titulo,desc){
+return `
+<div
+onmouseover="this.style.border='2px solid #3b6edc'"
+onmouseout="this.style.border='2px solid #ddd'"
+style="
+background:white;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+border:2px solid #ddd;
+cursor:pointer;
+transition:0.2s;
+">
+
+<b>${icon} ${titulo}</b><br><br>
+
+${desc}
+
+</div>
+`;
+}
+
+
+// START
+inicio();
+function itemConfig(icon,titulo,desc){
+return `
+<div
+onmouseover="this.style.border='2px solid #3b6edc'"
+onmouseout="this.style.border='2px solid #ddd'"
+style="
+background:white;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+border:2px solid #ddd;
+cursor:pointer;
+transition:0.2s;
+">
+
+<b>${icon} ${titulo}</b><br><br>
+
+${desc}
+
+</div>
+`;
+}
+
+</script>
+
+</body>
+</html>

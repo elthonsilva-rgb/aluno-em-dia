@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<header>
+<button onclick="voltar()">←</button>
+Gestão do Aluno
+</header>
+
+<div class="container">
+
+<div class="card">
+<select onchange="filtrar()">
+<option>Fundamental I - A</option>
+</select>
+</div>
+
+<div class="card">
+<h3>Alunos</h3>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<script>
+
+function voltar(){ window.location="menu.html"; }
+
+function filtrar(){
+let html="";
+
+alunos.forEach(a=>{
+let m = media(a.notas);
+
+html+=`
+<div class="item">
+<div class="barra ${cor(m)}"></div>
+<b>${a.nome.split(" ")[0]}</b> — Média ${m}
+</div>
+`;
+});
+
+lista.innerHTML=html;
+}
+
+filtrar();
+
+</script>
+
+</body>
+</html>
+``
